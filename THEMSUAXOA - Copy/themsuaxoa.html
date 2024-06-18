@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <tiltle>Document</tiltle>
+</head>
+
+<body onload="renderStudent()">
+    <div class="form">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input id="name" type="text" class="form-input">
+            <div class="error-message"></div>
+        </div>
+        <div class="form-group">
+            <label for="address">address:</label>
+            <input id="address" type="text" class="form-input">
+            <div class="error-message"></div>
+        </div>
+
+        <button onclick="validateInput()">Add New</button>
+    </div>
+    <script>
+        function validateInput() {
+            let formElement = document.querySelector(".form")
+            let inputElement = formElement.querySelectorAll(".form-input")
+            for (let i = 0; i < inputElement.length; i++) {
+                if (inputElement[i].value === "") {
+                    inputElement[i].parentElement.querySelector(".error-message").innerText = 'please enter your ${inputElement[i].id}'
+                } else {
+                    inputElement[i].parentElement.querySelector(".error-message").innerText = ""
+
+                }
+            }
+        }
+
+        function addnew() {
+            validateInput()
+            let formElement = document.querySelector("form")
+            let errorElement = formElement.querySelector(".form")
+            let arErrorElement = []
+            for (let i = 0; i < errorElement.length; i++) {
+                arErrorElement.push(errorElement[i].innerText)
+            }
+            let checkErrorElement = arErrorElement.every(value => value === "")
+            if (checkErrorElement) {
+                let name = document.getElementById("name").value
+                let address = document.getElementById("address").value
+                let listStudent = localStorage.getItem("list-student") ? JSON.parse(localStorage.getItem("list-student")) : []
+                listStudent.push({
+                    name: name,
+                    addess: address
+                })
+                localStorage.setItem("list-student", JSON.stringify(listStudent))
+                renderStudent()
+            }
+        }
+
+
+
+        function renderStudent(){
+            let listStudent = localStorage.getItem("liststudent") ? JSON.parse(localStorage.getItem("list-student")) : []
+            let student = <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>ADDRESS</th>
+                <th>Action</th>
+            </tr>
+
+            liststudent.map((value, index) => {
+                student += <tr>
+                    <td>${index + 1}</td>
+                    <td>${value.name}</td>
+                    <td>${value.address}</td>
+                    <button onclick="editStudent(${index})" >Edit</button>
+                    <button>Delete</button>
+                </tr>
+            })
+            document.getElementById("tableContent").interHTML=student
+        }
+        function editStudent(index){
+            let liststudent = localStorage.getItem("list-student") ? JSON.parse(localStorage.getItem("listStudent")):
+            document.getElementById("name").value = listStudent [index].name
+            document.getElementById("address").value = listStudent[index].address
+            document.getElementById("index").value = index
+            document.getElementById("save").style.display = "none"
+            document.getElementById("update").style.display="inline-block"
+        }
+        
+        function changeStudent() {
+            let listStudent = localStorage.getItem("list-student") ? JSON.parse(localStorage.getItem("list-student"))
+            let index = document.getElementById("index").value
+            listStudent{index} = {
+                name: document.getElementById("name").value,
+                address: document.getElementById("address").value
+            }
+            localStorage.setItem("list-student", JSON.stringify(listStudent))
+            renderStudent()
+            document.getElementById("save").style.display="inline-block"
+            document.getElementById("update").style.display = "none"
+            renderStudent
+            resetInput
+        }
+        
+    </script>
+
+</body>
+
+</html>
